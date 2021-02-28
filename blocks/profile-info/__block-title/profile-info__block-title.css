@@ -1,11 +1,10 @@
 .profile-info__block-title {
-    display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-
 @media screen and (max-width: 610px) {
-	.profile-info__block-title{
-		justify-content: center;
-	}
+  .profile-info__block-title {
+    justify-content: center;
+  }
 }

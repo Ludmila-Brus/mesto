@@ -5,14 +5,13 @@
 }
 
 @media all and (max-width: 950px) {
-  .page{  
+  .page{
     width: 600px;
-  }  
+  }
 }
 
-
 @media all and (max-width: 610px) {
-  .page{  
+  .page{
     width: 320px;
 	  min-width: 320px;
 	  margin: 28px auto 0;

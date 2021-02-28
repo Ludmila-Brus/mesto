@@ -1,21 +1,16 @@
 .popup__item {
   padding: 0;
-
   width: 358px;
   height: 27px;
-
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
 	font-family: inter, Arial, sans-serif;
 	font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-
   color: #000000;
 }
-
 
 @media screen and (max-width: 610px) {
   .popup__item{

@@ -1,16 +1,13 @@
 .profile-info {
-    width: calc(100% - 120px - 150px - 30px);
-    /* padding-top: 22px; */
-    padding-left: 30px;
-	
+  width: calc(100% - 120px - 150px - 30px);
+  padding-left: 30px;
 }
 
-/* 424 */
 @media screen and (max-width: 610px) {
-	.profile-info{
-		width: 100%;
-		margin: 26px auto 0;
-		height: 54px;
-        padding-left: 0;
-	}
+  .profile-info{
+    width: 100%;
+    margin: 26px auto 0;
+    height: 54px;
+    padding-left: 0;
+  }
 }
