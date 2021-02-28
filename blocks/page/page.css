@@ -1,0 +1,22 @@
+.page {
+  width: 880px; 
+  margin: 45px auto 0;
+  box-sizing: border-box;
+}
+
+@media all and (max-width: 950px) {
+  .page{  
+    width: 600px;
+  }  
+}
+
+
+@media all and (max-width: 610px) {
+  .page{  
+    width: 320px;
+	  min-width: 320px;
+	  margin: 28px auto 0;
+  }  
+}
+
+
