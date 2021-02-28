@@ -4,22 +4,22 @@ let editButton = profileInfo.querySelector('.profile-info__edit-button');
 let profileInfoTitle = profileInfo.querySelector('.profile-info__title');
 let profileInfoSubtitle = profileInfo.querySelector('.profile-info__subtitle');
 
-let popup = document.querySelector('.popup');
-let popupContainer = document.querySelector('.popup__container');
+let popupCover = document.querySelector('.popup-cover');
+let popupContainer = document.querySelector('.popup');
 let popupItemElemFio = popupContainer.querySelector('.popup__item_elem_fio');
 let popupItemElemIntro = popupContainer.querySelector('.popup__item_elem_intro');
 let popupCloseButton = popupContainer.querySelector('.popup__close-button');
 
 editButton.addEventListener('click', function () {
-  popup.classList.add('popup_opened');
-  popupContainer.classList.add('popup__container_opened');
+  popupCover.classList.add('popup-cover_opened');
+  popupContainer.classList.add('popup_opened');
   popupItemElemFio.value = profileInfoTitle.textContent;
   popupItemElemIntro.value = profileInfoSubtitle.textContent;
 }); 
 
 popupCloseButton.addEventListener('click', function () {
-  popup.classList.remove('popup_opened');
-  popupContainer.classList.remove('popup__container_opened');
+  popupCover.classList.remove('popup-cover_opened');
+  popupContainer.classList.remove('popup_opened');
 }); 
 
 // Обработчик «отправки» формы, хотя пока
@@ -36,8 +36,8 @@ function formSubmitHandler (evt) {
   // Вставьте новые значения с помощью textContent
   profileInfoTitle.textContent = popupItemElemFio.value;
   profileInfoSubtitle.textContent = popupItemElemIntro.value;
-  popup.classList.remove('popup_opened');
-  popupContainer.classList.remove('popup__container_opened');
+  popupCover.classList.remove('popup-cover_opened');
+  popupContainer.classList.remove('popup_opened');
 }
 
 // Прикрепляем обработчик к форме:
