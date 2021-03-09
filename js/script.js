@@ -10,15 +10,19 @@ let popupItemElemFio = popupContainer.querySelector('.popup__item_elem_fio');
 let popupItemElemIntro = popupContainer.querySelector('.popup__item_elem_intro');
 let popupCloseButton = popupContainer.querySelector('.popup__close-button');
 
-editButton.addEventListener('click', function () {
+function openPopup () {
   popupCover.classList.add('popup_opened');
   popupItemElemFio.value = profileInfoTitle.textContent;
   popupItemElemIntro.value = profileInfoSubtitle.textContent;
-}); 
+}
 
-popupCloseButton.addEventListener('click', function () {
-  popupCover.classList.remove('popup_opened');
-}); 
+editButton.addEventListener('click', openPopup); 
+
+function closePopup () {
+  popupCover.classList.remove('popup_opened'); 
+}
+
+popupCloseButton.addEventListener('click', closePopup); 
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -34,7 +38,7 @@ function formSubmitHandler (evt) {
   // Вставьте новые значения с помощью textContent
   profileInfoTitle.textContent = popupItemElemFio.value;
   profileInfoSubtitle.textContent = popupItemElemIntro.value;
-  popupCover.classList.remove('popup_opened');
+  closePopup();
 }
 
 // Прикрепляем обработчик к форме:
