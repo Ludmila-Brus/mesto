@@ -20,7 +20,11 @@
   opacity: 0.8;
 }
 
-@media screen and (max-width: 610px) {
+.popup__submit-button:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 635px) {
   .popup__submit-button {
     margin: 45px 22px 0;
     width: 238px;

@@ -20,7 +20,7 @@
   }
 } 
 
-@media all and (max-width: 610px) {
+@media all and (max-width: 635px) {
   .profile-info__title {
     max-width: 230px;
     font-size: 27px;

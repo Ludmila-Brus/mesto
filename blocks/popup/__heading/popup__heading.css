@@ -9,7 +9,7 @@
   color: #000000;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 635px) {
   .popup__heading {
     margin: 25px auto 0;
     text-align: center;

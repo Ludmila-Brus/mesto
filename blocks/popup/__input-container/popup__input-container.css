@@ -4,7 +4,7 @@
   border: none;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 635px) {
   .popup__input-container {
     margin: 45px 22px 0;   
   }

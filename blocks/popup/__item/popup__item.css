@@ -13,7 +13,7 @@
   color: #000000;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 635px) {
   .popup__item{
     width: 238px;   
   }

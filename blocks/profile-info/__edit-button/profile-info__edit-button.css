@@ -17,7 +17,11 @@
   cursor: pointer;
 }
   
-@media all and (max-width: 610px) {
+.profile-info__edit-button:focus {
+  outline: none;
+}
+
+@media all and (max-width: 635px) {
   .profile-info__edit-button {
     width: 18px;
     height: 18px;

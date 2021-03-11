@@ -3,11 +3,10 @@
   padding-left: 30px;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 635px) {
   .profile-info{
     width: 100%;
     margin: 26px auto 0;
-    height: 54px;
     padding-left: 0;
   }
 }

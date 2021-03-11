@@ -5,7 +5,7 @@
   align-items: center;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 635px) {
   .profile{
     width: 88.125%;
     margin: 42px auto 0;

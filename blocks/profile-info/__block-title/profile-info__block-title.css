@@ -3,7 +3,7 @@
   align-items: center;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 635px) {
   .profile-info__block-title {
     justify-content: center;
   }

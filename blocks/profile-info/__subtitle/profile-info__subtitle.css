@@ -20,7 +20,7 @@
   }
 }
 
-@media all and (max-width: 610px) {
+@media all and (max-width: 635px) {
   .profile-info__subtitle {
     margin: 4px 0 0 0;
     font-size: 14px;
