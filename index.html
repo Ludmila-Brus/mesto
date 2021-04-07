@@ -75,7 +75,7 @@
       <p class="footer__author">&copy; 2020 Mesto Russia</p>
     </footer>
   </div>
-  <div class="popup">
+  <div class="popup popup-profile">
     <form class="popup__content" name="form-popup-content">
       <button class="popup__close-button" type="reset"></button>
       <h2 class="popup__heading">Редактировать профиль</h2>
@@ -86,6 +86,27 @@
       <button type="submit" class="popup__submit-button">Сохранить</button>
     </form>
   </div>
+  <div class="popup popup-elem">
+    <form class="popup__content" name="form-popup-content">
+      <button class="popup__close-button" type="reset"></button>
+      <h2 class="popup__heading">Новое место</h2>
+      <fieldset class="popup__input-container">
+        <input type="text" class="popup__item popup__item_elem_title" id="elem-title" placeholder="Новое место" name="elem-title" value="">
+        <input type="text" class="popup__item popup__item_elem_lnk" id="elem-lnk" placeholder="Ссылка на картинку" name="elem-lnk" value="">
+      </fieldset>
+      <button type="submit" class="popup__submit-button">Сохранить</button>
+    </form>
+  </div>
+
+  <template id="element">
+    <article class="element">
+      <img class="element__image" alt="Карачаево-Черкессия">          
+      <div class="element__block-title">
+        <h2 class="element__title"></h2>
+        <button class="element__like-button" type="button"></button>
+      </div>
+    </article>
+</template> 
     
   <script src="./js/script.js"></script>
 </body>
