@@ -14,6 +14,9 @@ let popupItemElemFio = popupContainer.querySelector('.popup__item_elem_fio');
 let popupItemElemIntro = popupContainer.querySelector('.popup__item_elem_intro');
 let popupCloseButton = popupContainer.querySelector('.popup__close-button');
 let popupCloseButtonElem = popupContainerElem.querySelector('.popup__close-button');
+let popupItemElemTitle = popupContainerElem.querySelector('.popup__item_elem_title');
+let popupItemElemLnk = popupContainerElem.querySelector('.popup__item_elem_lnk');
+
 
 function setPopupItemProfile () {
   popupItemElemFio.value = profileInfoTitle.textContent;
@@ -68,10 +71,27 @@ function formSubmitHandler (evt) {
   closePopup(popupCover);
 }
 
+function addNewElement(imageSrc, imageAlt, elemTitle){
+  // куда клонировать будем
+  const elemSection = document.querySelector('.elements');
+  // получить содержимое template, через его свойство content
+  const elemTemplate = document.querySelector('#element').content;
+  // клонируем содержимое тега template
+  const newElement = elemTemplate.querySelector('.element').cloneNode(true);
+  // наполняем содержимым
+  newElement.querySelector('.element__image').src = imageSrc;
+  newElement.querySelector('.element__image').alt = imageAlt;  
+  newElement.querySelector('.element__title').textContent = elemTitle;
+  // отображаем на странице
+  elemSection.prepend(newElement); 
+}
+
 function formSubmitHandlerElem (evt) {
-  evt.preventDefault(); 
+  evt.preventDefault();
+  // Получим параметры из формы
   // дабавим новый Element
-  
+  addNewElement(popupItemElemLnk.value,popupItemElemTitle.value,popupItemElemTitle.value);
+  // закроем форму
   closePopup(popupCoverElem);
 }
 
@@ -79,3 +99,8 @@ function formSubmitHandlerElem (evt) {
 // он будет следить за событием “submit” - «отправка»
 popupContainer.addEventListener('submit', formSubmitHandler); 
 popupContainerElem.addEventListener('submit', formSubmitHandlerElem); 
+
+// инициализация
+// объявить массив
+// удалить существующие карточки
+// заполнить карточки из массива
