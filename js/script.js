@@ -17,7 +17,6 @@ let popupCloseButtonElem = popupContainerElem.querySelector('.popup__close-butto
 let popupItemElemTitle = popupContainerElem.querySelector('.popup__item_elem_title');
 let popupItemElemLnk = popupContainerElem.querySelector('.popup__item_elem_lnk');
 
-
 function setPopupItemProfile () {
   popupItemElemFio.value = profileInfoTitle.textContent;
   popupItemElemIntro.value = profileInfoSubtitle.textContent;
@@ -82,6 +81,16 @@ function addNewElement(imageSrc, imageAlt, elemTitle){
   newElement.querySelector('.element__image').src = imageSrc;
   newElement.querySelector('.element__image').alt = imageAlt;  
   newElement.querySelector('.element__title').textContent = elemTitle;
+  
+  // повесить обработчик на новый добавленный элемент
+  const likeButtonElem = newElement.querySelector('.element__like-button');
+  likeButtonElem.addEventListener('click', function (evt) {
+    // в переменной eventTarget окажется элемент
+    // button, на который мы кликнули
+    const eventTarget = evt.target;
+    eventTarget.classList.toggle('element__like-button_liked');
+  }); 
+
   // отображаем на странице
   elemSection.prepend(newElement); 
 }
@@ -101,6 +110,63 @@ popupContainer.addEventListener('submit', formSubmitHandler);
 popupContainerElem.addEventListener('submit', formSubmitHandlerElem); 
 
 // инициализация
-// объявить массив
-// удалить существующие карточки
-// заполнить карточки из массива
+function initGrid(){
+  // объявить массив
+  const initialCards = [
+    {
+      name: 'Архыз',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+    },
+    {
+      name: 'Челябинская область',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+    },
+    {
+      name: 'Иваново',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+    },
+    {
+      name: 'Камчатка',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+    },
+    {
+      name: 'Холмогорский район',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+    },
+    {
+      name: 'Байкал',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+    }
+  ];
+
+
+  // удалить существующие карточки
+  const elemSection = document.querySelector('.elements');
+  // псевдомассив дочерних элементов
+  const listElements = elemSection.children;
+  const listElementsLength = listElements.length;
+  for (var i = 0; i < listElementsLength; i++) {
+    listElements[0].remove();
+  }
+  
+  // заполнить карточки из массива
+  for (var i = 0; i < initialCards.length; i++) {
+    addNewElement(initialCards[i].link,initialCards[i].name,initialCards[i].name);
+  }
+}
+
+// инициализация
+initGrid();
+
+// повесить обработчики на все элементы
+// повесить обработчик на новый добавленный элемент
+//const likeButtonElem = document.querySelector('.element__like-button');
+//likeButtonElem.addEventListener('click', function (evt) {
+  // в переменной eventTarget окажется элемент
+  // button, на который мы кликнули
+  //  const eventTarget = evt.target;
+  //  console.log(`Классы: ${eventTarget.classList}`);
+ 
+   // eventTarget.classList.toggle('element__like-button_liked');
+   // console.log(`Классы: ${eventTarget.classList}`);
+//}); 
