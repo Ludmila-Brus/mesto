@@ -2,56 +2,76 @@ let profileInfo = document.querySelector('.profile-info');
 let editButtonProfile = profileInfo.querySelector('.profile-info__edit-button');
 let addButtonElem = document.querySelector('.profile__add-button');
 
-
 let profileInfoTitle = profileInfo.querySelector('.profile-info__title');
 let profileInfoSubtitle = profileInfo.querySelector('.profile-info__subtitle');
 
 let popupCover = document.querySelector('.popup-profile');
 let popupCoverElem = document.querySelector('.popup-elem');
+let popupCoverImg = document.querySelector('.popup-img');
+
 let popupContainer = popupCover.querySelector('.popup__content');
 let popupContainerElem = popupCoverElem.querySelector('.popup__content');
+let popupContainerImg = popupCoverImg.querySelector('.popup__content-img');
+
 let popupItemElemFio = popupContainer.querySelector('.popup__item_elem_fio');
 let popupItemElemIntro = popupContainer.querySelector('.popup__item_elem_intro');
 let popupCloseButton = popupContainer.querySelector('.popup__close-button');
 let popupCloseButtonElem = popupContainerElem.querySelector('.popup__close-button');
 let popupItemElemTitle = popupContainerElem.querySelector('.popup__item_elem_title');
 let popupItemElemLnk = popupContainerElem.querySelector('.popup__item_elem_lnk');
+let popupCloseButtonImg = popupContainerImg.querySelector('.popup__close-button');
 
 function setPopupItemProfile () {
   popupItemElemFio.value = profileInfoTitle.textContent;
   popupItemElemIntro.value = profileInfoSubtitle.textContent;
 }
 
-function openPopup (popupCoverParam) {
+function openPopup (popupCoverParam, popupContainerParam) {
+  popupCoverParam.classList.remove('popup_trans-delay');
   popupCoverParam.classList.add('popup_opened');
 }
 
 function openPopupProfile () {
-  openPopup(popupCover);
+  openPopup(popupCover, popupContainer);
   setPopupItemProfile();  
 }
 
 function openPopupElem () {
-  openPopup(popupCoverElem);
+  openPopup(popupCoverElem, popupContainerElem);
+}
+
+function openPopupImg (imageSrc, imageAlt) {
+  openPopup(popupCoverImg, popupContainerImg);
+  const popupBigImg = document.querySelector('.popup__big-img');
+  const popupTitle = document.querySelector('.popup__title');
+  popupBigImg.src = imageSrc;
+  popupBigImg.alt = imageAlt;  
+  popupTitle.textContent = imageAlt;  
 }
 
 editButtonProfile.addEventListener('click', openPopupProfile); 
 addButtonElem.addEventListener('click', openPopupElem); 
 
-function closePopup (popupCoverParam) {
-  popupCoverParam.classList.remove('popup_opened'); 
+function closePopup (popupCoverParam, popupContainerParam) {  
+ popupCoverParam.classList.add('popup_trans-delay'); 
+ popupCoverParam.classList.remove('popup_opened');   
 }
 
 function closePopupProfile () {
-  closePopup(popupCover); 
+  closePopup(popupCover, popupContainer); 
 }
 
 function closePopupElem () {
-  closePopup(popupCoverElem); 
+  closePopup(popupCoverElem, popupContainerElem); 
+}
+
+function closePopupImg () {
+  closePopup(popupCoverImg, popupContainerImg); 
 }
 
 popupCloseButton.addEventListener('click', closePopupProfile); 
 popupCloseButtonElem.addEventListener('click', closePopupElem); 
+popupCloseButtonImg.addEventListener('click', closePopupImg); 
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -89,7 +109,24 @@ function addNewElement(imageSrc, imageAlt, elemTitle){
     // button, на который мы кликнули
     const eventTarget = evt.target;
     eventTarget.classList.toggle('element__like-button_liked');
-  }); 
+  });
+  
+  // повесить обработчик картинки на новый добавленный элемент
+  //  const imgElem = newElement.querySelector('.element__image');
+  const imgElem = newElement.querySelector('.element__image');  
+  imgElem.addEventListener('click', function (evt){
+    const eventTarget = evt.target;
+    openPopupImg (eventTarget.src, eventTarget.alt);
+  });
+
+  // повесить обработчик на новый добавленный элемент
+  const delButtonElem = newElement.querySelector('.element__del-button');
+  delButtonElem.addEventListener('click', function (evt) {
+    // в переменной eventTarget окажется элемент
+    // button, на который мы кликнули
+    const parentElement = evt.target.parentElement;
+    parentElement.remove();
+  });
 
   // отображаем на странице
   elemSection.prepend(newElement); 

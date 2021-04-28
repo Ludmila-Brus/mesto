@@ -1,0 +1,13 @@
+.popup__close-button_shift_right {
+  /* margin-left: 75vw; */
+}  
+
+@media screen and (max-width: 635px) {
+  .popup__close-button_shift_right {
+    margin-top: -41px;
+    margin-left: 244px;
+    width: 38px;
+    height: 38px;
+    background-image: url(../../../images/close-button_0.svg);
+  }
+}
