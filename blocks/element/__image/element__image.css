@@ -4,3 +4,7 @@
   object-fit: cover;
   border-radius: 10px;
 }
+
+.element__image:hover {
+  cursor: pointer;
+}
