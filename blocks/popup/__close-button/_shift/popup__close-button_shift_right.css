@@ -1,5 +1,5 @@
 .popup__close-button_shift_right {
-  translate: 50px -50px;
+  transform: translate(50px, -50px);
   right: 0;
   position: absolute;
   margin-top: 0;
@@ -8,6 +8,6 @@
 
 @media screen and (max-width: 635px) {
   .popup__close-button_shift_right {
-    translate: 13px -50px;
+    transform: translate(13px, -50px);
   }
 }
