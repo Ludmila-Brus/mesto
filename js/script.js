@@ -113,7 +113,7 @@ function getNewElement(imageSrc, imageAlt, elemTitle){
   });
   
   // повесить обработчик картинки на новый добавленный элемент
-  //  const imgElem = newElement.querySelector('.element__image');
+  // const imgElem = newElement.querySelector('.element__image');
   const imgElem = newElement.querySelector('.element__image');  
   imgElem.addEventListener('click', function (evt){
     openPopupImg (evt.target.src, evt.target.alt);
@@ -122,7 +122,7 @@ function getNewElement(imageSrc, imageAlt, elemTitle){
   // повесить обработчик на новый добавленный элемент
   const delButtonElem = newElement.querySelector('.element__del-button');
   delButtonElem.addEventListener('click', function (evt) {
-    // в переменной eventTarget окажется элемент
+    // в переменной evt.target окажется элемент
     // button, на который мы кликнули
     evt.target.closest('.element').remove();
   });
@@ -139,6 +139,8 @@ function formSubmitHandlerElem (evt) {
   // Получим параметры из формы
   // сформируем и добавим новый Element
   addNewElement(getNewElement(popupItemElemLnk.value,popupItemElemTitle.value,popupItemElemTitle.value));
+  // очистим поля формы
+  evt.target.closest('.popup__content').reset();
   // закроем форму
   closePopup(popupCoverElem);
 }
