@@ -24,6 +24,11 @@
   outline: none;
 }
 
+.popup__submit-button:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
 @media screen and (max-width: 635px) {
   .popup__submit-button {
     margin: 45px 22px 0;

@@ -29,6 +29,10 @@ const elemSection = document.querySelector('.elements');
 // получить содержимое template, через его свойство content
 const elemTemplate = document.querySelector('#element').content;
 
+// Находим все 
+// сделаем из них массив методом Array.from
+const popupList = Array.from(document.querySelectorAll('.popup'));
+
 function setPopupItemProfile () {
   popupItemElemPerson.value = profileInfoTitle.textContent;
   popupItemElemIntro.value = profileInfoSubtitle.textContent;
@@ -61,6 +65,7 @@ addButtonElem.addEventListener('click', openPopupElem);
 function closePopup (popupCoverParam) {  
  popupCoverParam.classList.add('popup_trans-delay'); 
  popupCoverParam.classList.remove('popup_opened');   
+ //  hideInputError = (formElement, inputElement) 
 }
 
 function closePopupProfile () {
@@ -79,18 +84,20 @@ popupCloseButton.addEventListener('click', closePopupProfile);
 popupCloseButtonElem.addEventListener('click', closePopupElem); 
 popupCloseButtonImg.addEventListener('click', closePopupImg); 
 
+function keyHandlerClick(evt) {
+  if (evt.target = evt.currentTarget){
+    closePopup (evt.target); 
+  }
+}
+// закрытие popup по клику на оверлее
+popupList.forEach((item) => {
+  item.addEventListener('click', keyHandlerClick);
+});
+
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
 function formSubmitHandler (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                              // Так мы можем определить свою логику отправки.
-                                              // О том, как это делать, расскажем позже.
-
-  // Получите значение полей jobInput и nameInput из свойства value
-
-  // Выберите элементы, куда должны быть вставлены значения полей
-
-  // Вставьте новые значения с помощью textContent
   profileInfoTitle.textContent = popupItemElemPerson.value;
   profileInfoSubtitle.textContent = popupItemElemIntro.value;
   closePopup(popupCover);
@@ -150,6 +157,27 @@ function formSubmitHandlerElem (evt) {
 popupContainer.addEventListener('submit', formSubmitHandler); 
 popupContainerElem.addEventListener('submit', formSubmitHandlerElem); 
 
+// закрытие popup esc
+document.addEventListener('keydown', function(evt){
+  if (evt.key === 'Escape'){    
+    // обойдём все popup, ранее полученные в массив
+    popupList.forEach((item) => {
+      if (item.classList.contains('popup_opened')){
+        closePopup (item);  
+      }
+    });
+  }
+});
+
+enableValidation({
+    formSelector: '.popup__content', 
+    inputSelector: '.popup__item',
+	submitButtonSelector: '.popup__submit-button',
+	inactiveButtonClass: 'popup__submit-button_inactive',
+	inputErrorClass: 'popup__item_type_error',
+	errorClass: 'popup__item-error_active'
+  }
+); 
 // инициализация
 // объявить массив
 const initialCards = [
