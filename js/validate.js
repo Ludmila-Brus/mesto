@@ -1,4 +1,3 @@
-
 const showInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(inputErrorClass);
@@ -14,8 +13,7 @@ const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) 
 };
 
 const checkInputValidity = (formElement, inputElement, inputErrorClass, errorClass) => {
- 
- if (!inputElement.validity.valid) {
+  if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputErrorClass, errorClass);
   } else {
     hideInputError(formElement, inputElement, inputErrorClass, errorClass);
@@ -40,15 +38,11 @@ const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
 }; 
 
 const setEventListeners = (formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
-  // prevent page reload on form submit
-  //formElement.addEventListener('submit', (evt) => {
-  //  evt.preventDefault();
-  //});	
   // найти все input	
   const inputList = Array.from(formElement.querySelectorAll(inputSelector));
   // Найдём в текущей форме кнопку отправки
   const buttonElement = formElement.querySelector(submitButtonSelector);
-  
+  // цикл по input с установкой события на ввод
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
       checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
@@ -56,10 +50,8 @@ const setEventListeners = (formElement, inputSelector, submitButtonSelector, ina
       toggleButtonState(inputList, buttonElement, inactiveButtonClass);      
     });
   });
-  
   // set initial button state
-  toggleButtonState(inputList, buttonElement);  
-
+  toggleButtonState(inputList, buttonElement, inactiveButtonClass);  
 };
 
 const enableValidation = ({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) => {
@@ -73,5 +65,3 @@ const enableValidation = ({formSelector, inputSelector, submitButtonSelector, in
     setEventListeners(formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
   });
 };
-
-

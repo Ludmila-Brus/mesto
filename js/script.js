@@ -41,6 +41,11 @@ function setPopupItemProfile () {
 function openPopup (popupCoverParam) {
   popupCoverParam.classList.remove('popup_trans-delay');
   popupCoverParam.classList.add('popup_opened');
+  // скрыть подсветку прежнмх ошибок
+  const inputList = Array.from(popupCoverParam.querySelectorAll('.popup__item'));
+  inputList.forEach((inputElement) => {
+    hideInputError(popupCoverParam, inputElement, 'popup__item_type_error', 'popup__item-error_active');       
+  });   
 }
 
 function openPopupProfile () {
@@ -50,6 +55,8 @@ function openPopupProfile () {
 
 function openPopupElem () {
   openPopup(popupCoverElem);
+  // очистим поля формы
+  popupCoverElem.querySelector('.popup__content').reset();   
 }
 
 function openPopupImg (imageSrc, imageAlt) {
@@ -63,9 +70,8 @@ editButtonProfile.addEventListener('click', openPopupProfile);
 addButtonElem.addEventListener('click', openPopupElem); 
 
 function closePopup (popupCoverParam) {  
- popupCoverParam.classList.add('popup_trans-delay'); 
- popupCoverParam.classList.remove('popup_opened');   
- //  hideInputError = (formElement, inputElement) 
+  popupCoverParam.classList.add('popup_trans-delay'); 
+  popupCoverParam.classList.remove('popup_opened');    
 }
 
 function closePopupProfile () {
@@ -85,10 +91,11 @@ popupCloseButtonElem.addEventListener('click', closePopupElem);
 popupCloseButtonImg.addEventListener('click', closePopupImg); 
 
 function keyHandlerClick(evt) {
-  if (evt.target = evt.currentTarget){
+  if (evt.target === evt.currentTarget){
     closePopup (evt.target); 
   }
 }
+
 // закрытие popup по клику на оверлее
 popupList.forEach((item) => {
   item.addEventListener('click', keyHandlerClick);
@@ -159,7 +166,7 @@ popupContainerElem.addEventListener('submit', formSubmitHandlerElem);
 
 // закрытие popup esc
 document.addEventListener('keydown', function(evt){
-  if (evt.key === 'Escape'){    
+  if (evt.key === 'Escape'){  
     // обойдём все popup, ранее полученные в массив
     popupList.forEach((item) => {
       if (item.classList.contains('popup_opened')){
@@ -170,8 +177,8 @@ document.addEventListener('keydown', function(evt){
 });
 
 enableValidation({
-    formSelector: '.popup__content', 
-    inputSelector: '.popup__item',
+  formSelector: '.popup__content', 
+  inputSelector: '.popup__item',
 	submitButtonSelector: '.popup__submit-button',
 	inactiveButtonClass: 'popup__submit-button_inactive',
 	inputErrorClass: 'popup__item_type_error',
