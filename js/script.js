@@ -41,22 +41,34 @@ function setPopupItemProfile () {
 function openPopup (popupCoverParam) {
   popupCoverParam.classList.remove('popup_trans-delay');
   popupCoverParam.classList.add('popup_opened');
-  // скрыть подсветку прежнмх ошибок
-  const inputList = Array.from(popupCoverParam.querySelectorAll('.popup__item'));
-  inputList.forEach((inputElement) => {
-    hideInputError(popupCoverParam, inputElement, 'popup__item_type_error', 'popup__item-error_active');       
-  });   
+  // повесить обработчик закрытие popup esc
+  document.addEventListener('keydown', closeByEscape);
 }
 
 function openPopupProfile () {
   openPopup(popupCover);
+  // скрыть подсветку прежнмх ошибок
+  const inputList = Array.from(popupCover.querySelectorAll('.popup__item'));
+  inputList.forEach((inputElement) => {
+    hideInputError(popupCover, inputElement, 'popup__item_type_error', 'popup__item-error_active');       
+  });   
+  // установим актуальные данные профиля
   setPopupItemProfile();  
 }
 
 function openPopupElem () {
   openPopup(popupCoverElem);
+  // скрыть подсветку прежнмх ошибок
+  const inputList = Array.from(popupCoverElem.querySelectorAll('.popup__item'));
+  inputList.forEach((inputElement) => {
+    hideInputError(popupCoverElem, inputElement, 'popup__item_type_error', 'popup__item-error_active');       
+  });   
   // очистим поля формы
-  popupCoverElem.querySelector('.popup__content').reset();   
+  popupCoverElem.querySelector('.popup__content').reset();  
+  // set initial button state
+  // Найдём в текущей форме кнопку отправки
+  const buttonElement = popupCoverElem.querySelector('.popup__submit-button');
+  toggleButtonState(inputList, buttonElement, 'popup__submit-button_inactive');  
 }
 
 function openPopupImg (imageSrc, imageAlt) {
@@ -71,7 +83,9 @@ addButtonElem.addEventListener('click', openPopupElem);
 
 function closePopup (popupCoverParam) {  
   popupCoverParam.classList.add('popup_trans-delay'); 
-  popupCoverParam.classList.remove('popup_opened');    
+  popupCoverParam.classList.remove('popup_opened');   
+  // удалить обработчик закрытие popup esc
+  document.removeEventListener('keydown', closeByEscape);  
 }
 
 function closePopupProfile () {
@@ -113,9 +127,10 @@ function formSubmitHandler (evt) {
 function getNewElement(imageSrc, imageAlt, elemTitle){
   // клонируем содержимое тега template
   const newElement = elemTemplate.querySelector('.element').cloneNode(true);
+  const imgElem = newElement.querySelector('.element__image');  
   // наполняем содержимым
-  newElement.querySelector('.element__image').src = imageSrc;
-  newElement.querySelector('.element__image').alt = imageAlt;  
+  imgElem.src = imageSrc;
+  imgElem.alt = imageAlt;  
   newElement.querySelector('.element__title').textContent = elemTitle;
   
   // повесить обработчик на новый добавленный элемент
@@ -127,8 +142,6 @@ function getNewElement(imageSrc, imageAlt, elemTitle){
   });
   
   // повесить обработчик картинки на новый добавленный элемент
-  // const imgElem = newElement.querySelector('.element__image');
-  const imgElem = newElement.querySelector('.element__image');  
   imgElem.addEventListener('click', function (evt){
     openPopupImg (evt.target.src, evt.target.alt);
   });
@@ -164,17 +177,12 @@ function formSubmitHandlerElem (evt) {
 popupContainer.addEventListener('submit', formSubmitHandler); 
 popupContainerElem.addEventListener('submit', formSubmitHandlerElem); 
 
-// закрытие popup esc
-document.addEventListener('keydown', function(evt){
-  if (evt.key === 'Escape'){  
-    // обойдём все popup, ранее полученные в массив
-    popupList.forEach((item) => {
-      if (item.classList.contains('popup_opened')){
-        closePopup (item);  
-      }
-    });
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup); 
   }
-});
+}
 
 enableValidation({
   formSelector: '.popup__content', 
@@ -185,6 +193,7 @@ enableValidation({
 	errorClass: 'popup__item-error_active'
   }
 ); 
+
 // инициализация
 // объявить массив
 const initialCards = [

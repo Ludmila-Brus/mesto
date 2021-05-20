@@ -28,11 +28,11 @@ const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
   // Если есть хотя бы один невалидный инпут
   if (hasInvalidInput(inputList)) {
     // сделай кнопку неактивной
-	buttonElement.disabled = true;
+	  buttonElement.disabled = true;
     buttonElement.classList.add(inactiveButtonClass);
   } else {
     // иначе сделай кнопку активной
-	buttonElement.disabled = false;
+	  buttonElement.disabled = false;
     buttonElement.classList.remove(inactiveButtonClass);
   }
 }; 
@@ -50,8 +50,6 @@ const setEventListeners = (formElement, inputSelector, submitButtonSelector, ina
       toggleButtonState(inputList, buttonElement, inactiveButtonClass);      
     });
   });
-  // set initial button state
-  toggleButtonState(inputList, buttonElement, inactiveButtonClass);  
 };
 
 const enableValidation = ({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) => {
