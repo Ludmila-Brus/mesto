@@ -50,28 +50,18 @@ function openPopup (popupCoverParam) {
 
 function openPopupProfile () {
   openPopup(popupCover);
-  // скрыть подсветку прежнмх ошибок
-  const inputList = Array.from(popupCover.querySelectorAll('.popup__item'));
-  inputList.forEach((inputElement) => {
-    formValidatorProfile.hideInputError(inputElement);       
-  });   
   // установим актуальные данные профиля
   setPopupItemProfile();  
+  // очистим от прежних ошибок
+  formValidatorProfile.prepareFormBeforeOpen();     
 }
 
 function openPopupElem () {
   openPopup(popupCoverElem);
-  // скрыть подсветку прежнмх ошибок
-  const inputList = Array.from(popupCoverElem.querySelectorAll('.popup__item'));
-  inputList.forEach((inputElement) => {
-    formValidatorElem.hideInputError(inputElement);       
-  });   
   // очистим поля формы
   popupCoverElem.querySelector('.popup__content').reset();  
-  // set initial button state
-  // Найдём в текущей форме кнопку отправки
-  const buttonElement = popupCoverElem.querySelector('.popup__submit-button');
-  formValidatorElem.toggleButtonState(inputList, buttonElement);  
+  // очистим от прежних ошибок
+  formValidatorElem.prepareFormBeforeOpen(); 
 }
 
 function openPopupImg (imageSrc, imageAlt) {
