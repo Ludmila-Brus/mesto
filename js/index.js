@@ -1,5 +1,5 @@
-import Card from './card.js';
-import FormValidator from './formvalidator.js';
+import Card from './Card.js';
+import FormValidator from './Formvalidator.js';
 
 const profileInfo = document.querySelector('.profile-info');
 const editButtonProfile = profileInfo.querySelector('.profile-info__edit-button');
@@ -29,10 +29,8 @@ const popupTitle = document.querySelector('.popup__title');
 
 // куда клонировать будем
 const elemSection = document.querySelector('.elements');
-// получить содержимое template, через его свойство content
-const elemTemplate = document.querySelector('#element').content;
 
-// Находим все 
+// Находим все popup
 // сделаем из них массив методом Array.from
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
@@ -81,21 +79,9 @@ function closePopup (popupCoverParam) {
   document.removeEventListener('keydown', closeByEscape);  
 }
 
-function closePopupProfile () {
-  closePopup(popupCover); 
-}
-
-function closePopupElem () {
-  closePopup(popupCoverElem); 
-}
-
-function closePopupImg () {
-  closePopup(popupCoverImg); 
-}
-
-popupCloseButton.addEventListener('click', closePopupProfile); 
-popupCloseButtonElem.addEventListener('click', closePopupElem); 
-popupCloseButtonImg.addEventListener('click', closePopupImg); 
+popupCloseButton.addEventListener('click', () => closePopup(popupCover));
+popupCloseButtonElem.addEventListener('click', () => closePopup(popupCoverElem));
+popupCloseButtonImg.addEventListener('click', () => closePopup(popupCoverImg));
 
 function keyHandlerClick(evt) {
   if (evt.target === evt.currentTarget){

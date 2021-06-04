@@ -1,5 +1,4 @@
 class Card {
-  _openPopupImg;
 
   constructor(data, cardSelector, openPopupImg) {
     this._title = data.name;
@@ -38,14 +37,14 @@ class Card {
       this._handleLikeButtonMessageClick(evt);
     });
     // повесить обработчик картинки на новый добавленный элемент
-    this._imgElem.addEventListener('click', (evt) => {
-      this._handleOpenPopupImgClick(evt)
+    this._imgElem.addEventListener('click', () => {
+      this._handleOpenPopupImgClick()
     });    
     // повесить обработчик на новый добавленный элемент
-    this._element.querySelector('.element__del-button').addEventListener('click', (evt) => {
+    this._element.querySelector('.element__del-button').addEventListener('click', () => {
       // в переменной evt.target окажется элемент
       // button, на который мы кликнули
-      this._handleRemoveMessageClick(evt);
+      this._handleRemoveMessageClick();
     });
   }
 
@@ -53,15 +52,13 @@ class Card {
     evt.target.classList.toggle('element__like-button_liked');    
   }
 
-  _handleOpenPopupImgClick(evt) {
-  //  console.log(evt);
-  //  console.log(this._openPopupImg);
-    // openPopupImg (evt.target.src, evt.target.alt);
-    this._openPopupImg (evt.target.src, evt.target.alt);
+  _handleOpenPopupImgClick() {
+    this._openPopupImg (this._image, this._title);
   }
 
-  _handleRemoveMessageClick(evt) {
-    evt.target.closest('.element').remove();
+  _handleRemoveMessageClick() {
+    //evt.target.closest('.element').remove();
+    this._element.remove();
   }
 
 }
