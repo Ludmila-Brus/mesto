@@ -30,9 +30,9 @@ const popupProfile = new PopupWithForm(
   '.popup_type_edit-form',
   (inputList) => {
     userInfo.setUserInfo({
-      infoTitle : inputList[0],
-      infoSubTitle : inputList[1]
-      });
+      infoTitle : inputList.item_0,
+      infoSubTitle : inputList.item_1
+    });
   }
 );
 popupProfile.setEventListeners();
@@ -40,22 +40,21 @@ popupProfile.setEventListeners();
 const popupCard = new PopupWithForm(
   '.popup_type_add-card',
   (inputList) => {
+    const item =  {
+      name: inputList.item_0,
+      link: inputList.item_1
+    };
     // сформируем и добавим новый Element
     const card = new Card(
-      {
-        name: inputList[0],
-        link: inputList[1]
-      },
+       item,
        '#element',
-       (inputList) => {
+       (item) => {
          const popupImage = new PopupWithImage(
            '.popup_type_show-image',
-           {
-            name: inputList[0],
-            link: inputList[1]
-          } 
+           item
          );
-         popupImage.open;
+         popupImage.setEventListeners();
+         popupImage.open();
        });
     cardsList.addItem(card.generateCard());
   }
@@ -104,7 +103,8 @@ const cardsList = new Section(
             '.popup_type_show-image',
             item
           )
-          popupImage.open;
+          popupImage.setEventListeners();
+          popupImage.open();
         }
       );
       cardsList.addItem(card.generateCard());

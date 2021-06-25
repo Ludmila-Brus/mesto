@@ -53,14 +53,17 @@ class Card {
   }
 
   _handleOpenPopupImgClick() {
-    this._openPopupImg (this._image, this._title);
+    this._openPopupImg (
+      {
+        name: this._title,
+        link: this._image
+      }
+    );
   }
 
   _handleRemoveMessageClick() {
-    //evt.target.closest('.element').remove();
     this._element.remove();
   }
-
 }
 
 export default Card;
