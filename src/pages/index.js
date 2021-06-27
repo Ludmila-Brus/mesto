@@ -1,12 +1,12 @@
-import '../pages/index.css';
-import Section from './Section.js';
-import Card from './Card.js';
-import FormValidator from './Formvalidator.js';
-import initialCards from './const.js';
+import './index.css';
+import Section from '../components/Section.js';
+import Card from '../components/Card.js';
+import FormValidator from '../components/Formvalidator.js';
+import initialCards from '../js/const.js';
 
-import UserInfo from './UserInfo.js';
-import PopupWithForm from './PopupWithForm.js';
-import PopupWithImage from './PopupWithImage.js';
+import UserInfo from '../components/UserInfo.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
 
 const profileInfo = document.querySelector('.profile-info');
 const editButtonProfile = profileInfo.querySelector('.profile-info__edit-button');
@@ -28,35 +28,37 @@ const userInfo = new UserInfo(
 
 const popupProfile = new PopupWithForm(
   '.popup_type_edit-form',
-  (inputList) => {
-    userInfo.setUserInfo({
-      infoTitle : inputList.item_0,
-      infoSubTitle : inputList.item_1
-    });
+  (inputValues) => {
+    userInfo.setUserInfo(inputValues);
   }
 );
 popupProfile.setEventListeners();
+
+const popupImage = new PopupWithImage(
+  '.popup_type_show-image'
+);
+popupImage.setEventListeners();
+
+function createCard(item) {
+  // сформируем и добавим новый Element
+  const card = new Card(
+    item,
+    '#element',
+    (item) => {
+      popupImage.open(item.name, item.link);
+    });
+  return card.generateCard();
+} 
   
 const popupCard = new PopupWithForm(
   '.popup_type_add-card',
-  (inputList) => {
-    const item =  {
-      name: inputList.item_0,
-      link: inputList.item_1
+  (inputValues) => {
+    const item = {
+      name: inputValues["elem-title"],
+      link: inputValues["elem-lnk"]
     };
     // сформируем и добавим новый Element
-    const card = new Card(
-       item,
-       '#element',
-       (item) => {
-         const popupImage = new PopupWithImage(
-           '.popup_type_show-image',
-           item
-         );
-         popupImage.setEventListeners();
-         popupImage.open();
-       });
-    cardsList.addItem(card.generateCard());
+    cardsList.addItem(createCard(item));
   }
 );
 popupCard.setEventListeners();
@@ -95,19 +97,7 @@ const cardsList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(
-        item, 
-        '#element', 
-        (item) => {
-          const popupImage = new PopupWithImage(
-            '.popup_type_show-image',
-            item
-          )
-          popupImage.setEventListeners();
-          popupImage.open();
-        }
-      );
-      cardsList.addItem(card.generateCard());
+      cardsList.addItem(createCard(item));
     },
   },
   '.elements'

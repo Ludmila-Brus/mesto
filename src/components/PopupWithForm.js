@@ -5,21 +5,30 @@ class PopupWithForm extends Popup {
     super(popupSelector);       
     this._formSubmitHandler = formSubmitHandler;
     this.popupContainer = this._popupCover.querySelector('.popup__content');
+    this._inputListElem = Array.from(this.popupContainer.querySelectorAll('.popup__item'));    
   }      
  
   _getInputValues(){
     // собирает данные всех полей формы
-    const inputListElem = Array.from(this.popupContainer.querySelectorAll('.popup__item'));
-    const inputList = {}
-    inputList.item_0 = inputListElem[0].value;
-    inputList.item_1 = inputListElem[1].value;    
-    return inputList;
+    const inputValues = {};
+    this._inputListElem.forEach((item) => {
+      const KeyObj = item.name;
+      inputValues[KeyObj] = item.value;  
+    }); 
+    //inputList.item_0 = this._inputListElem[0].value;
+    //inputList.item_1 = this._inputListElem[1].value;    
+    return inputValues;
   }
 
   setInputValues(inputValues){
-    const inputListElem = Array.from(this.popupContainer.querySelectorAll('.popup__item'));
-    inputListElem[0].value = inputValues[0];
-    inputListElem[1].value = inputValues[1];
+    // ключи - названия input-ов    
+    this._inputListElem.forEach((item) => {
+      const KeyObj = item.name;
+      item.value = inputValues[KeyObj];
+    }); 
+
+   // this._inputListElem[0].value = inputValues[0];
+   // this._inputListElem[1].value = inputValues[1];
   }
 
   setEventListeners(){
@@ -27,8 +36,8 @@ class PopupWithForm extends Popup {
     this.popupContainer.addEventListener('submit',
       (evt) => {
         evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-        const inputList = this._getInputValues();
-        this._formSubmitHandler(inputList);        
+        const inputValues = this._getInputValues();
+        this._formSubmitHandler(inputValues);        
         this.close();
     }); 
   }

@@ -8,17 +8,21 @@ class UserInfo {
     getInputValues(){
       // возвращает объект с данными пользователя
       // Этот метод пригодится когда данные пользователя нужно будет подставить в форму при открытии  
-      const inputValues = [];
-      inputValues[0] = this._profileInfoTitle.textContent;
-      inputValues[1] = this._profileInfoSubtitle.textContent; 
-      return inputValues;      
+   //  const inputValues = [];
+   //   inputValues[0] = this._profileInfoTitle.textContent;
+   //   inputValues[1] = this._profileInfoSubtitle.textContent; 
+   //   return inputValues;      
+      const userData = {};
+      userData.person = this._profileInfoTitle.textContent;
+      userData.intro = this._profileInfoSubtitle.textContent;
+      return userData;       
     }
   
     setUserInfo(userData){
       // принимает новые данные пользователя и 
       // добавляет их на страницу
-      this._profileInfoTitle.textContent = userData.infoTitle;
-      this._profileInfoSubtitle.textContent = userData.infoSubTitle;
+      this._profileInfoTitle.textContent = userData.person;
+      this._profileInfoSubtitle.textContent = userData.intro;
     }  
   } 
   
