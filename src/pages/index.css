@@ -41,6 +41,7 @@
 @import url(../blocks/element/__like-button/element__like-button.css);
 @import url(../blocks/element/__del-button/element__del-button.css);
 @import url(../blocks/element/__like-button/_liked/element__like-button_liked.css);
+@import url(../blocks/element/__likes/element__likes.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__author/footer__author.css);

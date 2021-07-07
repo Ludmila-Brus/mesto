@@ -1,0 +1,20 @@
+.element__likes {
+  margin: 0;
+  padding: 0;
+  color: #000000;
+  font-family: inter, Arial, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 66px;
+}
+ 
+
+ 
+
+  

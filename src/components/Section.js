@@ -6,6 +6,10 @@ class Section {
     this._container = document.querySelector(containerSelector);
   }
 
+  addInitData(items){
+    this._items = items;
+  }
+
   renderItems() {
     this._items.forEach((item) => {
       this._renderer(item); 
