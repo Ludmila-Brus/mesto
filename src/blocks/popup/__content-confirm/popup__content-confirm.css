@@ -1,0 +1,11 @@
+.popup__content-confirm {
+  width: 430px;
+  min-height: 181px;
+}
+
+@media screen and (max-width: 635px) {
+  .popup__content-confirm {
+    width: 282px;
+    min-height: 181px;
+  }
+}

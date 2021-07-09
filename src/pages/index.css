@@ -7,6 +7,7 @@
 @import url(../blocks/popup/_trans-delay/popup_trans-delay.css);
 
 @import url(../blocks/popup/_theme/popup_theme_dark.css);
+
 @import url(../blocks/popup/__content/popup__content.css);
 @import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/popup/__input-container/popup__input-container.css);
@@ -23,6 +24,9 @@
 @import url(../blocks/popup/__content-img/popup__content-img.css);
 @import url(../blocks/popup/__big-img/popup__big-img.css);
 @import url(../blocks/popup/__title/popup__title.css);
+
+@import url(../blocks/popup/__content-confirm/popup__content-confirm.css);
+
 @import url(../blocks/page/page.css);
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
@@ -40,6 +44,8 @@
 @import url(../blocks/element/__image/element__image.css);
 @import url(../blocks/element/__like-button/element__like-button.css);
 @import url(../blocks/element/__del-button/element__del-button.css);
+@import url(../blocks/element/__del-button/_visible/element__del-button_visible.css);
+
 @import url(../blocks/element/__like-button/_liked/element__like-button_liked.css);
 @import url(../blocks/element/__likes/element__likes.css);
 

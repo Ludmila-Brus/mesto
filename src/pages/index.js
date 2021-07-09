@@ -6,6 +6,7 @@ import FormValidator from '../components/Formvalidator.js';
 import UserInfo from '../components/UserInfo.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
+import PopupConfirm from '../components/PopupConfirm';
 
 let initialCards = [];
 
@@ -53,15 +54,14 @@ const popupProfile = new PopupWithForm(
       userInfo.setUserInfo(
         {
           person: result.name,
-          intro: result.about
+          intro: result.about,
+          id: result._id 
         }  
       ); 
     })
     .catch((err) => {
       console.log(err); // "Что-то пошло не так: ..."
-    });  
-    
-   // userInfo.setUserInfo(inputValues);
+    });      
   }
 );
 popupProfile.setEventListeners();
@@ -71,6 +71,11 @@ const popupImage = new PopupWithImage(
 );
 popupImage.setEventListeners();
 
+const popupConfirm = new PopupConfirm(
+  '.popup_type_confirm'
+);
+popupConfirm.setEventListeners();
+
 function createCard(item) {
   // сформируем и добавим новый Element
   const card = new Card(
@@ -78,7 +83,38 @@ function createCard(item) {
     '#element',
     (item) => {
       popupImage.open(item.name, item.link);
-    });
+    },
+    () => {
+      popupConfirm.setOnSubmit(
+        () => {
+          const cardId = card.get_card_id();
+          fetch(`https://mesto.nomoreparties.co/v1/cohort-25/cards/${cardId}`, {
+            method: 'DELETE',
+            headers: {
+              authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24'
+            }
+          })
+          .then((res) => {
+            if (res.ok) {
+              card.remove();
+              popupConfirm.close();    
+              return;
+          }
+          // отклоняем промис, чтобы перейти
+          //в блок catch, если сервер вернул ошибку 
+          return Promise.reject(`Удаление карточки: Что-то пошло не так: ${res.status}`);
+          })
+          .catch((err) => {
+            console.log(err); // "Что-то пошло не так: ..."
+          }); 
+        }
+      )
+      popupConfirm.open();
+    },
+    () => {
+      return userInfo.getUserId();
+    }  
+  );
   return card.generateCard();
 } 
 
@@ -116,12 +152,14 @@ const popupCard = new PopupWithForm(
       return Promise.reject(`Карточка: Что-то пошло не так: ${res.status}`);
     })
     .then((result) => {
-
+      
       const item = {
         name: result.name,
-        link: result.link
+        link: result.link,
+        likes: result.likes.length,
+        ownerId: result.owner._id, 
+        id: result._id
       };
-      console.log(cardsList);
       // сформируем и добавим новый Element
       cardsList.addItem(createCard(item));
 
@@ -133,6 +171,7 @@ const popupCard = new PopupWithForm(
   }
 );
 popupCard.setEventListeners();
+
 
 const formValidatorProfile = new FormValidator(initialValid, popupProfile.popupContainer);
 formValidatorProfile.enableValidation();
@@ -183,13 +222,49 @@ fetch('https://mesto.nomoreparties.co/v1/cohort-25/users/me', {
   userInfo.setUserInfo(
     {
       person: result.name,
-      intro: result.about
+      intro: result.about,
+      id: result._id
     }  
-  ); 
+  );
+  // карточки грузим после профиля
+
+ /*  fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
+    headers: {
+      method: 'GET',
+      authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24'
+    }
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    // отклоняем промис, чтобы перейти
+    //в блок catch, если сервер вернул ошибку 
+    return Promise.reject(`Карточки: Что-то пошло не так: ${res.status}`);
+  })
+  .then((result) => {
+    result.forEach((item) => {
+      initialCards.unshift({
+        name: item.name,
+        link: item.link,
+        likes: item.likes.length,
+        ownerId: item.owner._id,
+        id: item._id
+      }); 
+    });
+    cardsList.addInitData(initialCards);
+    cardsList.renderItems();   
+  })
+  .catch((err) => {
+    console.log(err); // "Что-то пошло не так: ..."
+  });  */
+  
+  // конец карточки после профиля
 })
 .catch((err) => {
   console.log(err); // "Что-то пошло не так: ..."
 }); 
+
 
 fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
   headers: {
@@ -201,33 +276,20 @@ fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
   if (res.ok) {
     return res.json();
   }
-  /* отклоняем промис, чтобы перейти
-  в блок catch, если сервер вернул ошибку */
+  // отклоняем промис, чтобы перейти
+  //в блок catch, если сервер вернул ошибку 
   return Promise.reject(`Карточки: Что-то пошло не так: ${res.status}`);
 })
 .then((result) => {
-  console.log(result);
- 
   result.forEach((item) => {
-   // console.log(item);
     initialCards.unshift({
       name: item.name,
       link: item.link,
-      likes: item.likes.length
+      likes: item.likes.length,
+      ownerId: item.owner._id,
+      id: item._id
     }); 
   });
-  console.log('let cardsList');
-
-/*   const cardsList = new Section(
-    {
-      items: initialCards,
-      renderer: (item) => {
-        cardsList.addItem(createCard(item));
-      },
-    },
-    '.elements'
-  ); 
- */  
   cardsList.addInitData(initialCards);
   cardsList.renderItems();   
 })
@@ -235,9 +297,12 @@ fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
   console.log(err); // "Что-то пошло не так: ..."
 }); 
 
-console.log('test1');
-console.log(initialCards);
-console.log('test2');
-console.log(cardsList);
+
+//console.log('test1');
+//console.log(initialCards);
+//console.log('test2');
+//console.log(cardsList);
+//console.log(userInfo.getUserId());
+//console.log(userId);
 
 

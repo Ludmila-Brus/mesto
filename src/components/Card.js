@@ -1,11 +1,18 @@
 class Card {
 
-  constructor(data, cardSelector, openPopupImg) {
+  constructor(data, cardSelector, 
+    openPopupImg, getPopupConfirm, getUserId
+    ) {
     this._title = data.name;
-    this._image = data.link;
+    this._image = data.link; 
     this._likes = data.likes;
+    this._ownerId = data.ownerId;
+    this._id = data.id;
     this._cardSelector = cardSelector;
     this._openPopupImg = openPopupImg;
+ //   this._getPopupConfirm = getPopupConfirm;
+    this._handleRemoveMessageClick = getPopupConfirm;
+    this._getUserId = getUserId;
   }
 
   _getTemplate() {
@@ -29,6 +36,17 @@ class Card {
     this._imgElem.alt = this._title;  
     this._element.querySelector('.element__title').textContent = this._title;
     this._element.querySelector('.element__likes').textContent = this._likes;    
+    
+    //console.log(`owner ${this._ownerId}`);
+    //console.log(`user ${this._getUserId()}`);    
+    //const userId = 'e041b91eaea967da1d0cf8d3';
+    if (this._ownerId === this._getUserId()) {
+  //  if (this._ownerId === userId) {    
+      this._element.querySelector('.element__del-button').classList.add('element__del-button_visible'); 
+    } else
+    {
+      this._element.querySelector('.element__del-button').classList.remove('element__del-button_visible'); 
+    };
 
     return this._element;
   }
@@ -63,9 +81,18 @@ class Card {
     );
   }
 
-  _handleRemoveMessageClick() {
+  remove(){
     this._element.remove();
   }
+
+  get_card_id(){
+    return this._id;
+  }
+  /* _handleRemoveMessageClick() {
+    if (this._getPopupConfirm()){
+      this._element.remove();
+    }
+  } */
 }
 
 export default Card;
