@@ -5,6 +5,7 @@ class PopupWithForm extends Popup {
     super(popupSelector);       
     this._formSubmitHandler = formSubmitHandler;
     this.popupContainer = this._popupCover.querySelector('.popup__content');
+    this._popupSubmitButton = this._popupCover.querySelector('.popup__submit-button');    
     this._inputListElem = Array.from(this.popupContainer.querySelectorAll('.popup__item'));    
   }      
  
@@ -37,16 +38,29 @@ class PopupWithForm extends Popup {
       (evt) => {
         evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
         const inputValues = this._getInputValues();
+        this._setSaveTextButton();
+      //  console.log(this._popupSubmitButton.innerHTML);
         this._formSubmitHandler(inputValues);        
         this.close();
     }); 
   }
 
-  close(){
-    // очистим поля формы
+  open(){
+    // очистим поля формы, 
+    // это красивей делать при открытии, а не при закрытии 
     this.popupContainer.reset();
-    super.close();    
+    this._setSubmitTextButton();
+    super.open();
   }
+
+  _setSaveTextButton(){
+    this._popupSubmitButton.innerHTML = 'Сохранение...'
+  }
+
+  _setSubmitTextButton(){
+    this._popupSubmitButton.innerHTML = 'Сохранить'
+  }
+
 
 } 
 export default PopupWithForm;

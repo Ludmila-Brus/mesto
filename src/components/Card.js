@@ -1,7 +1,12 @@
 class Card {
 
-  constructor(data, cardSelector, 
-    openPopupImg, getPopupConfirm, getUserId
+  constructor(
+      data, 
+      cardSelector, 
+      openPopupImg, 
+      getPopupConfirm, 
+      getUserId,
+      handleLikeButtonClick
     ) {
     this._title = data.name;
     this._image = data.link; 
@@ -13,6 +18,7 @@ class Card {
  //   this._getPopupConfirm = getPopupConfirm;
     this._handleRemoveMessageClick = getPopupConfirm;
     this._getUserId = getUserId;
+    this._handleLikeButtonClick = handleLikeButtonClick;
   }
 
   _getTemplate() {
@@ -37,11 +43,7 @@ class Card {
     this._element.querySelector('.element__title').textContent = this._title;
     this._element.querySelector('.element__likes').textContent = this._likes;    
     
-    //console.log(`owner ${this._ownerId}`);
-    //console.log(`user ${this._getUserId()}`);    
-    //const userId = 'e041b91eaea967da1d0cf8d3';
     if (this._ownerId === this._getUserId()) {
-  //  if (this._ownerId === userId) {    
       this._element.querySelector('.element__del-button').classList.add('element__del-button_visible'); 
     } else
     {
@@ -52,15 +54,15 @@ class Card {
   }
 
   _setEventListeners() {
-    // повесить обработчик на новый добавленный элемент
+    // повесить обработчик like на новый добавленный элемент
     this._element.querySelector('.element__like-button').addEventListener('click', (evt) => {
-      this._handleLikeButtonMessageClick(evt);
+      this._handleLikeButtonClick(evt);
     });
     // повесить обработчик картинки на новый добавленный элемент
     this._imgElem.addEventListener('click', () => {
       this._handleOpenPopupImgClick()
     });    
-    // повесить обработчик на новый добавленный элемент
+    // повесить обработчик del на новый добавленный элемент
     this._element.querySelector('.element__del-button').addEventListener('click', () => {
       // в переменной evt.target окажется элемент
       // button, на который мы кликнули
@@ -68,8 +70,23 @@ class Card {
     });
   }
 
-  _handleLikeButtonMessageClick(evt) {
+  /*  _handleLikeButtonClick(evt) {
+
     evt.target.classList.toggle('element__like-button_liked');    
+  }  */
+
+  setUnsetLike(evt){
+    evt.target.classList.toggle('element__like-button_liked');
+  }
+
+  setLikeCount(likeCount){
+    this._element.querySelector('.element__likes').textContent = likeCount;    
+  }
+
+  isLiked(){
+    return this._element.
+      querySelector('.element__like-button').
+      classList.contains('element__like-button_liked');
   }
 
   _handleOpenPopupImgClick() {

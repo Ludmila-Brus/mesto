@@ -3,6 +3,7 @@ class UserInfo {
       this._profileInfo = document.querySelector('.profile-info');      
       this._profileInfoTitle = this._profileInfo.querySelector(profileInfoTitleSelector);
       this._profileInfoSubtitle = this._profileInfo.querySelector(profileInfoSubtitleSelector);
+      this._avatar = document.querySelector('.profile-avatar');      
 //      this.boundgetUserId = this._getUserId.bind(this);      
     }      
    
@@ -27,6 +28,11 @@ class UserInfo {
     getUserId(){
     //  console.log(this._id);
       return this._id;
+    }
+
+    setUserAvatar(avatarLnk){
+      this._avatar.src = avatarLnk;
+     // console.log(`<%=require(${avatarLnk})%>`); 
     }
   } 
   

@@ -1,4 +1,5 @@
 import './index.css';
+import Api from '../components/Api';
 import Section from '../components/Section.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/Formvalidator.js';
@@ -13,6 +14,7 @@ let initialCards = [];
 const profileInfo = document.querySelector('.profile-info');
 const editButtonProfile = profileInfo.querySelector('.profile-info__edit-button');
 const addButtonElem = document.querySelector('.profile__add-button');
+const editButtonAvatar = document.querySelector('.profile-avatar-button');
 
 const initialValid =
   {
@@ -23,6 +25,14 @@ const initialValid =
     errorClass: 'popup__item-error_active'    
   };
 
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-25',
+  headers: {
+    authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24',
+    'Content-Type': 'application/json'
+  }
+});  
+
 const userInfo = new UserInfo(
   '.profile-info__title',
   '.profile-info__subtitle'
@@ -31,25 +41,7 @@ const userInfo = new UserInfo(
 const popupProfile = new PopupWithForm(
   '.popup_type_edit-form',
   (inputValues) => {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-25/users/me', {
-      method: 'PATCH',  
-      headers: {
-        authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: inputValues.person,
-        about: inputValues.intro
-      })
-    })
-     .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      /* отклоняем промис, чтобы перейти
-      в блок catch, если сервер вернул ошибку */
-      return Promise.reject(`Профиль: Что-то пошло не так: ${res.status}`);
-    })
+    api.editUserInfo(inputValues)
     .then((result) => {
       userInfo.setUserInfo(
         {
@@ -88,22 +80,12 @@ function createCard(item) {
       popupConfirm.setOnSubmit(
         () => {
           const cardId = card.get_card_id();
-          fetch(`https://mesto.nomoreparties.co/v1/cohort-25/cards/${cardId}`, {
-            method: 'DELETE',
-            headers: {
-              authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24'
-            }
-          })
-          .then((res) => {
-            if (res.ok) {
+          api.deleteCard(cardId)
+          .then(() => {
               card.remove();
-              popupConfirm.close();    
-              return;
-          }
-          // отклоняем промис, чтобы перейти
-          //в блок catch, если сервер вернул ошибку 
-          return Promise.reject(`Удаление карточки: Что-то пошло не так: ${res.status}`);
-          })
+              popupConfirm.close(); 
+            }
+          )
           .catch((err) => {
             console.log(err); // "Что-то пошло не так: ..."
           }); 
@@ -113,8 +95,31 @@ function createCard(item) {
     },
     () => {
       return userInfo.getUserId();
-    }  
-  );
+    },
+    (evt) => {
+          let methodLike = 'PUT';
+          if (card.isLiked()){
+            methodLike = 'DELETE';
+          }
+          const cardId = card.get_card_id();
+          api.editLikeCard(methodLike, cardId)
+          .then((result) => {
+            const item = {
+              name: result.name,
+              link: result.link,
+              likes: result.likes.length,
+              ownerId: result.owner._id, 
+              id: result._id
+            };
+            card.setUnsetLike(evt);
+            card.setLikeCount(result.likes.length);
+            }
+          )          
+          .catch((err) => {
+            console.log(err); // "Что-то пошло не так: ..."
+          }); 
+        } 
+      )
   return card.generateCard();
 } 
 
@@ -131,28 +136,8 @@ const cardsList = new Section(
 const popupCard = new PopupWithForm(
   '.popup_type_add-card',
   (inputValues) => {
-
-    fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
-      method: 'POST',  
-      headers: {
-        authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: inputValues["elem-title"],
-        link: inputValues["elem-lnk"]
-      })
-    })
-     .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      /* отклоняем промис, чтобы перейти
-      в блок catch, если сервер вернул ошибку */
-      return Promise.reject(`Карточка: Что-то пошло не так: ${res.status}`);
-    })
-    .then((result) => {
-      
+    api.addCard(inputValues)
+    .then((result) => {      
       const item = {
         name: result.name,
         link: result.link,
@@ -162,7 +147,6 @@ const popupCard = new PopupWithForm(
       };
       // сформируем и добавим новый Element
       cardsList.addItem(createCard(item));
-
     })
     .catch((err) => {
       console.log(err); // "Что-то пошло не так: ..."
@@ -172,12 +156,28 @@ const popupCard = new PopupWithForm(
 );
 popupCard.setEventListeners();
 
+const popupAvatar = new PopupWithForm(
+  '.popup_type_avatar',
+  (inputValues) => {      
+    api.editAvatar(inputValues["avatar-lnk"])
+    .then((result) => {
+      userInfo.setUserAvatar(result.avatar);
+    })
+    .catch((err) => {
+      console.log(err); // "Что-то пошло не так: ..."
+    });  
+  }
+);
+popupAvatar.setEventListeners();
 
 const formValidatorProfile = new FormValidator(initialValid, popupProfile.popupContainer);
 formValidatorProfile.enableValidation();
 
 const formValidatorElem = new FormValidator(initialValid, popupCard.popupContainer);
 formValidatorElem.enableValidation();
+
+const formValidatorAvatar = new FormValidator(initialValid, popupAvatar.popupContainer);
+formValidatorAvatar.enableValidation();
 
 editButtonProfile.addEventListener(
   'click', 
@@ -189,6 +189,15 @@ editButtonProfile.addEventListener(
     popupProfile.setInputValues(inputValues);
     // очистим от прежних ошибок
     formValidatorProfile.prepareFormBeforeOpen();     
+  }
+);
+
+editButtonAvatar.addEventListener(
+  'click', 
+  () => {
+    popupAvatar.open();
+    // очистим от прежних ошибок
+    formValidatorAvatar.prepareFormBeforeOpen();     
   }
 ); 
 
@@ -203,45 +212,21 @@ addButtonElem.addEventListener(
   }
 ); 
 
-
-fetch('https://mesto.nomoreparties.co/v1/cohort-25/users/me', {
-  headers: {
-    method: 'GET',
-    authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24'
-  }
-})
-.then((res) => {
-  if (res.ok) {
-    return res.json();
-  }
-  /* отклоняем промис, чтобы перейти
-  в блок catch, если сервер вернул ошибку */
-  return Promise.reject(`Профиль: Что-то пошло не так: ${res.status}`);
-})
-.then((result) => {
-  userInfo.setUserInfo(
-    {
-      person: result.name,
-      intro: result.about,
-      id: result._id
-    }  
-  );
-  // карточки грузим после профиля
-
- /*  fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
-    headers: {
-      method: 'GET',
-      authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24'
-    }
+api.getInitialUser()
+  .then((result) => {
+    userInfo.setUserInfo(
+      {
+        person: result.name,
+        intro: result.about,
+        id: result._id
+      }  
+    );
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    // отклоняем промис, чтобы перейти
-    //в блок catch, если сервер вернул ошибку 
-    return Promise.reject(`Карточки: Что-то пошло не так: ${res.status}`);
-  })
+  .catch((err) => {
+    console.log(err); // "Что-то пошло не так: ..."
+  });
+
+api.getInitialCards()
   .then((result) => {
     result.forEach((item) => {
       initialCards.unshift({
@@ -253,56 +238,10 @@ fetch('https://mesto.nomoreparties.co/v1/cohort-25/users/me', {
       }); 
     });
     cardsList.addInitData(initialCards);
-    cardsList.renderItems();   
+    cardsList.renderItems();  
   })
   .catch((err) => {
-    console.log(err); // "Что-то пошло не так: ..."
-  });  */
-  
-  // конец карточки после профиля
-})
-.catch((err) => {
-  console.log(err); // "Что-то пошло не так: ..."
-}); 
-
-
-fetch('https://mesto.nomoreparties.co/v1/cohort-25/cards', {
-  headers: {
-    method: 'GET',
-    authorization: '54b8222d-4fbc-42db-9de4-60158ca8ba24'
-  }
-})
-.then((res) => {
-  if (res.ok) {
-    return res.json();
-  }
-  // отклоняем промис, чтобы перейти
-  //в блок catch, если сервер вернул ошибку 
-  return Promise.reject(`Карточки: Что-то пошло не так: ${res.status}`);
-})
-.then((result) => {
-  result.forEach((item) => {
-    initialCards.unshift({
-      name: item.name,
-      link: item.link,
-      likes: item.likes.length,
-      ownerId: item.owner._id,
-      id: item._id
-    }); 
+    console.log(err); // выведем ошибку в консоль
   });
-  cardsList.addInitData(initialCards);
-  cardsList.renderItems();   
-})
-.catch((err) => {
-  console.log(err); // "Что-то пошло не так: ..."
-}); 
-
-
-//console.log('test1');
-//console.log(initialCards);
-//console.log('test2');
-//console.log(cardsList);
-//console.log(userInfo.getUserId());
-//console.log(userId);
 
 
