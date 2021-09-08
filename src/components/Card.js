@@ -11,6 +11,7 @@ class Card {
     this._title = data.name;
     this._image = data.link; 
     this._likes = data.likes;
+    this._ownerLike = data.ownerLike;
     this._ownerId = data.ownerId;
     this._id = data.id;
     this._cardSelector = cardSelector;
@@ -41,8 +42,15 @@ class Card {
     this._imgElem.src = this._image;
     this._imgElem.alt = this._title;  
     this._element.querySelector('.element__title').textContent = this._title;
-    this._element.querySelector('.element__likes').textContent = this._likes;    
-    
+    this._element.querySelector('.element__likes').textContent = this._likes;  
+
+    if (this._ownerLike === 1) {
+      this._element.querySelector('.element__like-button').classList.add('element__like-button_liked');      
+    } else 
+    {
+      this._element.querySelector('.element__like-button').classList.remove('element__like-button_liked');      
+    }
+
     if (this._ownerId === this._getUserId()) {
       this._element.querySelector('.element__del-button').classList.add('element__del-button_visible'); 
     } else

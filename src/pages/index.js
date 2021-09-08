@@ -221,6 +221,7 @@ api.getInitialUser()
         id: result._id
       }  
     );
+    userInfo.setUserAvatar(result.avatar);
   })
   .catch((err) => {
     console.log(err); // "Что-то пошло не так: ..."
@@ -228,11 +229,19 @@ api.getInitialUser()
 
 api.getInitialCards()
   .then((result) => {
+    let ownerLike;
     result.forEach((item) => {
+      ownerLike = 0;
+      item.likes.forEach((item_like) => {        
+        if (userInfo.getUserId() === item_like._id){
+          ownerLike = 1;
+        }
+      });      
       initialCards.unshift({
         name: item.name,
         link: item.link,
         likes: item.likes.length,
+        ownerLike: ownerLike,
         ownerId: item.owner._id,
         id: item._id
       }); 
