@@ -4,6 +4,13 @@ class Api {
     this._headers = options.headers;  
   } 
 
+  _getResponseData(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Что-то пошло не так: ${res.status}`);
+  } 
+
   editUserInfo(inputValues) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
@@ -13,12 +20,7 @@ class Api {
         about: inputValues.intro
       })      
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Профиль: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
   
   deleteCard(cardId) {
@@ -26,12 +28,7 @@ class Api {
       method: 'DELETE',
       headers: this._headers
     })
-      .then((res) => {
-        if (res.ok) {
-          return;
-        }
-        return Promise.reject(`Удаление карточки: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
 
   editLikeCard(methodLike, cardId) {
@@ -39,14 +36,7 @@ class Api {
       method: methodLike,
       headers: this._headers
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // отклоняем промис, чтобы перейти
-        // в блок catch, если сервер вернул ошибку 
-        return Promise.reject(`Лайк: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
 
   addCard(inputValues) {
@@ -58,14 +48,7 @@ class Api {
         link: inputValues["elem-lnk"]
       })
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // отклоняем промис, чтобы перейти
-        // в блок catch, если сервер вернул ошибку 
-        return Promise.reject(`Карточка: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
 
   editAvatar(avatar) {
@@ -76,14 +59,7 @@ class Api {
         avatar: avatar
       })
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // отклоняем промис, чтобы перейти
-        // в блок catch, если сервер вернул ошибку 
-        return Promise.reject(`Аватар: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
       
   getInitialCards() {
@@ -91,14 +67,7 @@ class Api {
       method: 'GET',
       headers: this._headers
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // отклоняем промис, чтобы перейти
-        // в блок catch, если сервер вернул ошибку 
-        return Promise.reject(`Карточки: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
 
   getInitialUser() {
@@ -106,14 +75,7 @@ class Api {
       method: 'GET',
       headers: this._headers
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        // отклоняем промис, чтобы перейти
-        // в блок catch, если сервер вернул ошибку 
-        return Promise.reject(`Профиль:: Что-то пошло не так: ${res.status}`);
-      })
+      .then((res) => this._getResponseData(res))
   }
   
 }

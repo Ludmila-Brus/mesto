@@ -15,7 +15,7 @@ class PopupConfirm extends Popup {
       (evt) => {
         evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
         this._formSubmitHandler();        
-        this.close();
+        //this.close();
     }); 
   }
 

@@ -49,7 +49,8 @@ const popupProfile = new PopupWithForm(
           intro: result.about,
           id: result._id 
         }  
-      ); 
+      );
+      popupProfile.close();       
     })
     .catch((err) => {
       console.log(err); // "Что-то пошло не так: ..."
@@ -107,7 +108,7 @@ function createCard(item) {
             const item = {
               name: result.name,
               link: result.link,
-              likes: result.likes.length,
+              likes: result.likes,
               ownerId: result.owner._id, 
               id: result._id
             };
@@ -141,12 +142,13 @@ const popupCard = new PopupWithForm(
       const item = {
         name: result.name,
         link: result.link,
-        likes: result.likes.length,
+        likes: result.likes,
         ownerId: result.owner._id, 
         id: result._id
       };
       // сформируем и добавим новый Element
       cardsList.addItem(createCard(item));
+      popupCard.close();      
     })
     .catch((err) => {
       console.log(err); // "Что-то пошло не так: ..."
@@ -162,6 +164,7 @@ const popupAvatar = new PopupWithForm(
     api.editAvatar(inputValues["avatar-lnk"])
     .then((result) => {
       userInfo.setUserAvatar(result.avatar);
+      popupAvatar.close();      
     })
     .catch((err) => {
       console.log(err); // "Что-то пошло не так: ..."
@@ -212,45 +215,29 @@ addButtonElem.addEventListener(
   }
 ); 
 
-api.getInitialUser()
-  .then((result) => {
-    userInfo.setUserInfo(
-      {
-        person: result.name,
-        intro: result.about,
-        id: result._id
-      }  
-    );
-    userInfo.setUserAvatar(result.avatar);
-  })
-  .catch((err) => {
-    console.log(err); // "Что-то пошло не так: ..."
+Promise.all([api.getInitialUser(), api.getInitialCards()])
+.then((result) => {
+  userInfo.setUserInfo(
+    {
+      person: result[0].name,
+      intro: result[0].about,
+      id: result[0]._id
+    }  
+  );
+  userInfo.setUserAvatar(result[0].avatar);
+  //
+  result[1].forEach((item) => {
+    initialCards.unshift({
+      name: item.name,
+      link: item.link,
+      likes: item.likes,
+      ownerId: item.owner._id,
+      id: item._id
+    }); 
   });
-
-api.getInitialCards()
-  .then((result) => {
-    let ownerLike;
-    result.forEach((item) => {
-      ownerLike = 0;
-      item.likes.forEach((item_like) => {        
-        if (userInfo.getUserId() === item_like._id){
-          ownerLike = 1;
-        }
-      });      
-      initialCards.unshift({
-        name: item.name,
-        link: item.link,
-        likes: item.likes.length,
-        ownerLike: ownerLike,
-        ownerId: item.owner._id,
-        id: item._id
-      }); 
-    });
-    cardsList.addInitData(initialCards);
-    cardsList.renderItems();  
-  })
-  .catch((err) => {
-    console.log(err); // выведем ошибку в консоль
-  });
-
-
+  cardsList.addInitData(initialCards);
+  cardsList.renderItems();    
+})
+.catch((err) => {
+  console.log(err); // "Что-то пошло не так: ..."
+});

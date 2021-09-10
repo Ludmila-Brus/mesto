@@ -39,9 +39,8 @@ class PopupWithForm extends Popup {
         evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
         const inputValues = this._getInputValues();
         this._setSaveTextButton();
-      //  console.log(this._popupSubmitButton.innerHTML);
         this._formSubmitHandler(inputValues);        
-        this.close();
+       // this.close();
     }); 
   }
 
