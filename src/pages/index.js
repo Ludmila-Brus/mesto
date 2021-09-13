@@ -217,16 +217,17 @@ addButtonElem.addEventListener(
 
 Promise.all([api.getInitialUser(), api.getInitialCards()])
 .then((result) => {
+  let [resultUser, resultCard] = result;
   userInfo.setUserInfo(
     {
-      person: result[0].name,
-      intro: result[0].about,
-      id: result[0]._id
+      person: resultUser.name,
+      intro: resultUser.about,
+      id: resultUser._id
     }  
   );
-  userInfo.setUserAvatar(result[0].avatar);
+  userInfo.setUserAvatar(resultUser.avatar);
   //
-  result[1].forEach((item) => {
+  resultCard.forEach((item) => {
     initialCards.unshift({
       name: item.name,
       link: item.link,
